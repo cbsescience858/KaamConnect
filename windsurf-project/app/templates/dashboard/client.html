@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid fade-in">
+  <!-- Welcome Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="section-title">
+          <span class="icon-pill"><i class="fas fa-handshake"></i></span>
+          <div>
+            <h2 class="mb-1">{{ t('welcome') }}, {{ current_user.first_name or current_user.username }}!</h2>
+            <p class="text-muted mb-0">{{ t('client_dashboard_intro') or 'Manage your jobs and connect with talented workers' }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-primary btn-sm" onclick="refreshDashboard()">
+            <i class="fas fa-sync-alt me-1"></i>Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="dashboard-stats text-center">
+        <div class="stat-item">
+          <span class="stat-number">{{ current_user.jobs|length if current_user.jobs else 0 }}</span>
+          <span class="stat-label">Active Jobs</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="dashboard-stats text-center">
+        <div class="stat-item">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Applications</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="dashboard-stats text-center">
+        <div class="stat-item">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Completed</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="dashboard-stats text-center">
+        <div class="stat-item">
+          <span class="stat-number">₹0</span>
+          <span class="stat-label">Total Spent</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h4 class="mb-3">
+        <i class="fas fa-bolt text-warning me-2"></i>Quick Actions
+      </h4>
+    </div>
+    <div class="col-lg-4 col-md-6 mb-3">
+      <div class="card hover-lift h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-3">
+            <span class="icon-pill"><i class="fas fa-briefcase"></i></span>
+            <h5 class="card-title mb-0">{{ t('create_job') or 'Create Job' }}</h5>
+          </div>
+          <p class="card-text text-muted flex-grow-1">Post a new job and start receiving applications from skilled workers in your area.</p>
+          <a href="{{ url_for('jobs.create_job') }}" class="btn btn-success btn-animate">
+            {{ t('create_job') or 'Create Job' }}
+            <i class="fas fa-plus ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 mb-3">
+      <div class="card hover-lift h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-3">
+            <span class="icon-pill"><i class="fas fa-list-check"></i></span>
+            <h5 class="card-title mb-0">My Jobs</h5>
+          </div>
+          <p class="card-text text-muted flex-grow-1">Track your posted jobs, manage applications, and monitor progress.</p>
+          <a href="{{ url_for('main.jobs') }}" class="btn btn-outline-primary btn-animate">
+            View Jobs
+            <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 mb-3">
+      <div class="card hover-lift h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-3">
+            <span class="icon-pill"><i class="fas fa-comments"></i></span>
+            <h5 class="card-title mb-0">Messages</h5>
+          </div>
+          <p class="card-text text-muted flex-grow-1">Chat with workers in real-time and coordinate project details.</p>
+          <a href="{{ url_for('main.chat') }}" class="btn btn-outline-info btn-animate">
+            Open Chat
+            <i class="fas fa-paper-plane ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="row">
+    <div class="col-lg-8 mb-4">
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h5 class="mb-0">
+            <i class="fas fa-clock me-2"></i>Recent Activity
+          </h5>
+          <button class="btn btn-sm btn-outline-secondary">View All</button>
+        </div>
+        <div class="card-body">
+          <div class="text-center py-4 text-muted">
+            <i class="fas fa-inbox fa-3x mb-3 opacity-50"></i>
+            <p>No recent activity to display.</p>
+            <small>Your job posts and applications will appear here.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fas fa-chart-line me-2"></i>Performance
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <small class="text-muted">Profile Completion</small>
+              <small class="text-muted">75%</small>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-success" style="width: 75%"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <small class="text-muted">Response Rate</small>
+              <small class="text-muted">--</small>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-info" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="text-center mt-3">
+            <a href="{{ url_for('main.profile') }}" class="btn btn-sm btn-outline-primary">
+              Complete Profile
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function refreshDashboard() {
+  // Add loading state
+  const refreshBtn = event.target.closest('button');
+  const originalContent = refreshBtn.innerHTML;
+  refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Refreshing...';
+  refreshBtn.disabled = true;
+  
+  // Simulate refresh (replace with actual API call)
+  setTimeout(() => {
+    refreshBtn.innerHTML = originalContent;
+    refreshBtn.disabled = false;
+    
+    // Show success notification
+    if (window.kaamConnectUI) {
+      window.kaamConnectUI.showNotification({
+        title: 'Dashboard Updated',
+        message: 'Your dashboard has been refreshed with the latest data.',
+        type: 'success'
+      });
+    }
+  }, 1500);
+}
+</script>
+{% endblock %}

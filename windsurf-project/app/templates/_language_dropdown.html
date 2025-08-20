@@ -1,0 +1,13 @@
+<form method="POST" action="{{ url_for('language.set_language') }}" class="d-inline">
+  {% set sel = current_user.preferred_language if current_user.is_authenticated else (session.get('preferred_language') or 'en') %}
+  <select name="language" onchange="this.form.submit()" class="form-select form-select-sm" style="width:auto;display:inline-block;vertical-align:middle;">
+    <option value="en" {% if sel == 'en' %}selected{% endif %}>English</option>
+    <option value="hi" {% if sel == 'hi' %}selected{% endif %}>Hindi</option>
+    <option value="ta" {% if sel == 'ta' %}selected{% endif %}>Tamil</option>
+    <option value="te" {% if sel == 'te' %}selected{% endif %}>Telugu</option>
+    <option value="kn" {% if sel == 'kn' %}selected{% endif %}>Kannada</option>
+    <option value="bn" {% if sel == 'bn' %}selected{% endif %}>Bengali</option>
+    <option value="mr" {% if sel == 'mr' %}selected{% endif %}>Marathi</option>
+    <option value="gu" {% if sel == 'gu' %}selected{% endif %}>Gujarati</option>
+  </select>
+</form>

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4 fade-in">
+  <div class="section-title mb-3">
+    <span class="icon-pill"><i class="fa fa-briefcase"></i></span>
+    <h2 class="m-0">{{ t('welcome') }}, {{ current_user.first_name or current_user.username }}!</h2>
+  </div>
+  <p class="text-muted">{{ t('worker_dashboard_intro') }}</p>
+
+  <div class="row g-3 mt-3">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card hover-lift h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-2">
+            <span class="icon-pill"><i class="fa fa-magnifying-glass"></i></span>
+            <h5 class="card-title mb-0">{{ t('find_matching_jobs') }}</h5>
+          </div>
+          <p class="card-text text-muted small">Discover opportunities tailored to your skills and location.</p>
+          <a href="{{ url_for('jobs.job_matches') }}" class="btn btn-primary mt-auto btn-animate">
+            {{ t('find_matching_jobs') }}
+            <i class="fa fa-arrow-right ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card hover-lift h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-2">
+            <span class="icon-pill"><i class="fa fa-tags"></i></span>
+            <h5 class="card-title mb-0">{{ t('manage_skills') }}</h5>
+          </div>
+          <p class="card-text text-muted small">Keep your skills up to date to improve your matches.</p>
+          <a href="{{ url_for('skills.get_user_skills') }}" class="btn btn-outline-primary mt-auto btn-animate">
+            {{ t('manage_skills') }}
+            <i class="fa fa-pen ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card hover-lift h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-2">
+            <span class="icon-pill"><i class="fa fa-location-dot"></i></span>
+            <h5 class="card-title mb-0">Location</h5>
+          </div>
+          <p class="card-text text-muted small">Share your live location with clients when needed.</p>
+          <a href="{{ url_for('location.share_location') if 'location.share_location' in current_app.view_functions else '#' }}" class="btn btn-outline-secondary mt-auto btn-animate">
+            Share Location
+            <i class="fa fa-location-arrow ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card hover-lift h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-2">
+            <span class="icon-pill"><i class="fa fa-comments"></i></span>
+            <h5 class="card-title mb-0">Messages</h5>
+          </div>
+          <p class="card-text text-muted small">Chat with clients in real-time with translation support.</p>
+          <a href="{{ url_for('chat.inbox') if 'chat.inbox' in current_app.view_functions else '#' }}" class="btn btn-outline-secondary mt-auto btn-animate">
+            Open Chat
+            <i class="fa fa-paper-plane ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="row mt-4 g-3">
+    <div class="col-md-4">
+      <a href="{{ url_for('jobs.job_matches') }}" class="btn btn-primary w-100 btn-animate">
+        <i class="fa fa-rocket me-2"></i> {{ t('find_matching_jobs') }}
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('skills.get_user_skills') }}" class="btn btn-outline-primary w-100 btn-animate">
+        <i class="fa fa-wrench me-2"></i> {{ t('manage_skills') }}
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a href="{{ url_for('main.jobs') }}" class="btn btn-outline-secondary w-100 btn-animate">
+        <i class="fa fa-briefcase me-2"></i> {{ t('jobs') if t('jobs') != 'jobs' else 'Jobs' }}
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

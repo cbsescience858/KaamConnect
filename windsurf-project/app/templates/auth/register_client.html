@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>{{ t('client_registration') }}</h2>
+  <form method="POST">
+    <div class="mb-3">
+      <label for="username" class="form-label">{{ t('full_name') }}</label>
+      <input type="text" class="form-control" id="username" name="username" required {{ targetcursor() }}>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">{{ t('email') }}</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">{{ t('password') }}</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="mb-3">
+      <label for="phone_number" class="form-label">{{ t('phone_number') }}</label>
+      <input type="text" class="form-control" id="phone_number" name="phone_number">
+    </div>
+    {% include '_state_dropdown.html' %}
+    <div class="mb-3">
+      <label for="district" class="form-label">{{ t('district') }}</label>
+      <select class="form-select" id="district" name="district" required>
+        <option value="">{{ t('select_district') }}</option>
+      </select>
+    </div>
+    <script src="{{ url_for('static', filename='state_districts.js') }}"></script>
+    <script>
+      document.getElementById('state').addEventListener('change', function() {
+        updateDistrictDropdown('state', 'district');
+      });
+    </script>
+    <div class="mb-3">
+      <label for="city" class="form-label">{{ t('city') }}</label>
+      <input type="text" class="form-control" id="city" name="city">
+    </div>
+    <button type="submit" class="btn btn-primary">{{ t('register') }}</button>
+  </form>
+</div>
+{% endblock %}

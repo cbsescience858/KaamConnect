@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>{{ t('create_new_job') }}</h2>
+  <form method="POST">
+    <div class="mb-3">
+      <label for="title" class="form-label">{{ t('job_title') }}</label>
+      <input type="text" class="form-control" id="title" name="title" required {{ targetcursor() }}>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">{{ t('description') }}</label>
+      <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="budget" class="form-label">{{ t('budget_inr') }}</label>
+      <input type="number" class="form-control" id="budget" name="budget" min="0" required>
+    </div>
+    <div class="mb-3">
+      <label for="location" class="form-label">{{ t('location') }}</label>
+      <input type="text" class="form-control" id="location" name="location">
+    </div>
+    <button type="submit" class="btn btn-primary">{{ t('create_job') }}</button>
+  </form>
+</div>
+{% endblock %}

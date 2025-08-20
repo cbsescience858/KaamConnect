@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Job Matches{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Recommended Jobs</h2>
+  {% if jobs %}
+    <div class="list-group">
+      {% for job in jobs %}
+        <a class="list-group-item list-group-item-action" href="{{ url_for('jobs.view_job', job_id=job.id) }}">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ job.title }}</h5>
+            <small>{{ job.location or '-' }}</small>
+          </div>
+          <p class="mb-1">{{ job.description }}</p>
+          <small>Budget: ₹{{ job.budget if job.budget is not none else '-' }}</small>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No matches available.</p>
+  {% endif %}
+</div>
+{% endblock %}

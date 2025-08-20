@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <i class="fas fa-tools fa-3x text-success mb-3"></i>
+            <h2 class="card-title">{{ t('worker_registration') }}</h2>
+            <p class="text-muted">{{ t('worker_registration_subtitle') }}</p>
+          </div>
+          
+          <form method="POST">
+            <div class="mb-3">
+              <label for="username" class="form-label">{{ t('full_name') }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="username" name="username" required {{ targetcursor() }}>
+            </div>
+            
+            <div class="mb-3">
+              <label for="phone_number" class="form-label">{{ t('phone_number') }} <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="phone_number" name="phone_number" 
+                     placeholder="+91 98765 43210" required>
+              <div class="form-text">{{ t('phone_number_help') }}</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="password" class="form-label">{{ t('password') }} <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            
+            <!-- Location Section -->
+            <div class="mb-4">
+              <h5 class="text-muted mb-3">{{ t('location_details') }}</h5>
+              
+              {% include '_state_dropdown.html' %}
+              
+              <div class="mb-3">
+                <label for="district" class="form-label">{{ t('district') }} <span class="text-danger">*</span></label>
+                <select class="form-select" id="district" name="district" required>
+                  <option value="">{{ t('select_district') }}</option>
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label for="city" class="form-label">{{ t('city') }}</label>
+                <input type="text" class="form-control" id="city" name="city" 
+                       placeholder="{{ t('city_placeholder') }}">
+              </div>
+            </div>
+            
+            <!-- Skills Section -->
+            <div class="mb-4">
+              <h5 class="text-muted mb-3">{{ t('skills_and_expertise') }}</h5>
+              
+              <div class="mb-3">
+                <label for="work_tags" class="form-label">{{ t('work_tags') }} <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="work_tags" name="work_tags" 
+                       placeholder="{{ t('work_tags_placeholder') }}" required>
+                <div class="form-text">{{ t('work_tags_help') }}</div>
+              </div>
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success btn-lg">
+                <i class="fas fa-user-plus me-2"></i>{{ t('register') }}
+              </button>
+            </div>
+          </form>
+          
+          <div class="text-center mt-3">
+            <p class="text-muted mb-0">{{ t('already_have_account') }} 
+              <a href="{{ url_for('auth.login') }}" class="text-decoration-none">{{ t('login_here') }}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// District dropdown update functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const stateSelect = document.getElementById('state');
+  const districtSelect = document.getElementById('district');
+  
+  if (stateSelect && districtSelect) {
+    stateSelect.addEventListener('change', function() {
+      const selectedState = this.value;
+      
+      // Clear district options
+      districtSelect.innerHTML = '<option value="">{{ t("loading_districts") }}</option>';
+      
+      if (selectedState) {
+        // Fetch districts for selected state
+        fetch(`/location/districts?state=${encodeURIComponent(selectedState)}`)
+          .then(response => response.json())
+          .then(data => {
+            districtSelect.innerHTML = '<option value="">{{ t("select_district") }}</option>';
+            
+            if (data.districts && data.districts.length > 0) {
+              data.districts.forEach(district => {
+                const option = document.createElement('option');
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+              });
+            } else {
+              districtSelect.innerHTML = '<option value="">{{ t("no_districts_found") }}</option>';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching districts:', error);
+            districtSelect.innerHTML = '<option value="">{{ t("error_loading_districts") }}</option>';
+          });
+      } else {
+        districtSelect.innerHTML = '<option value="">{{ t("select_district") }}</option>';
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

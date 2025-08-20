@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100 py-4">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-5 col-md-7 col-sm-9">
+            <div class="card shadow-lg border-0 fade-in">
+                <div class="card-header text-center py-4">
+                    <div class="mb-3">
+                        <i class="fas fa-handshake fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="mb-1">{{ t('login') or 'Welcome Back' }}</h3>
+                    <p class="text-muted mb-0">
+                        <span data-i18n-key="signin_subtitle">{{ t('signin_subtitle') or 'Sign in to your KaamConnect account' }}</span>
+                    </p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('auth.login') }}" id="loginForm">
+                        <div class="mb-4">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope me-2"></i>{{ t('email') or 'Email' }} / {{ t('phone_number') or 'Phone' }}
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="email" 
+                                       name="email" 
+                                       placeholder="{{ t('email_phone_placeholder') or 'Enter your email or phone number' }}" 
+                                       data-i18n-placeholder-key="email_phone_placeholder"
+                                       required 
+                                       {{ targetcursor() }} 
+                                       autocomplete="username">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock me-2"></i>{{ t('password') or 'Password' }}
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-key"></i>
+                                </span>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password" 
+                                       name="password" 
+                                       placeholder="{{ t('password_placeholder') or 'Enter your password' }}"
+                                       data-i18n-placeholder-key="password_placeholder"
+                                       required 
+                                       autocomplete="current-password">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                                <label class="form-check-label" for="rememberMe">
+                                    <span data-i18n-key="remember_me">{{ t('remember_me') or 'Remember me' }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-3 btn-animate">
+                            <i class="fas fa-sign-in-alt me-2"></i>{{ t('login') or 'Sign In' }}
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-2">Don't have an account?</p>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-user-plus me-2"></i>{{ t('register_link') or 'Create Account' }}
+                        </a>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-muted small">
+                            <i class="fas fa-question-circle me-1"></i><span data-i18n-key="forgot_password">{{ t('forgot_password') or 'Forgot your password?' }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password toggle functionality
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+    
+    if (togglePassword && passwordField) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    }
+    
+    // Form submission enhancement
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalContent = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Signing in...';
+            submitBtn.disabled = true;
+            
+            // Re-enable button after 5 seconds as fallback
+            setTimeout(() => {
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+            }, 5000);
+        });
+    }
+});
+</script>
+{% endblock %}

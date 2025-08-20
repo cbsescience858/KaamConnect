@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Job Applications{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Applications for: {{ job.title }}</h2>
+  {% if applications %}
+    <ul class="list-group">
+      {% for app in applications %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div>
+            <div class="fw-semibold">{{ app.applicant.first_name or app.applicant.username }}</div>
+            <div class="small text-muted">{{ app.message or '-' }}</div>
+          </div>
+          <span class="badge bg-secondary">{{ app.status }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No applications yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

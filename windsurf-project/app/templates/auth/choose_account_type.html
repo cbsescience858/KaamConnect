@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold">{{ t('choose_account_type') }}</h2>
+        <p class="lead text-muted">{{ t('select_account_type_description') }}</p>
+      </div>
+      
+      <div class="row g-4">
+        <!-- Client Registration -->
+        <div class="col-md-6">
+          <a href="{{ url_for('auth.register_client') }}" class="text-decoration-none">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+              <div class="card-body text-center p-5">
+                <div class="mb-4">
+                  <i class="fas fa-briefcase fa-4x text-primary"></i>
+                </div>
+                <h3 class="card-title fw-bold text-primary">{{ t('client') }}</h3>
+                <p class="card-text text-muted">{{ t('client_description') }}</p>
+                <div class="mt-4">
+                  <span class="btn btn-primary btn-lg px-4">{{ t('register_as_client') }}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        
+        <!-- Worker Registration -->
+        <div class="col-md-6">
+          <a href="{{ url_for('auth.register_worker') }}" class="text-decoration-none">
+            <div class="card h-100 shadow-sm border-0 hover-card">
+              <div class="card-body text-center p-5">
+                <div class="mb-4">
+                  <i class="fas fa-tools fa-4x text-success"></i>
+                </div>
+                <h3 class="card-title fw-bold text-success">{{ t('worker') }}</h3>
+                <p class="card-text text-muted">{{ t('worker_description') }}</p>
+                <div class="mt-4">
+                  <span class="btn btn-success btn-lg px-4">{{ t('register_as_worker') }}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="text-center mt-4">
+        <p class="text-muted">{{ t('already_have_account') }} <a href="{{ url_for('auth.login') }}" class="text-decoration-none">{{ t('login_here') }}</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.hover-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+</style>
+{% endblock %}
